@@ -1,1 +1,1 @@
-export { default } from './DaysTypesPage'
+export { default } from './DaysTypesPage';
