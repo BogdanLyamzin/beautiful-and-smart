@@ -1,1 +1,1 @@
-export {default} from './ShiftsTable'
+export { default } from './ShiftsTable';
