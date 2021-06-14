@@ -8,7 +8,8 @@ const EmployeesPage = lazy(() => import('./pages/EmployeesPage' /* webpackChunkN
 const WorkingMonthPage = lazy(() => import('./pages/WorkingMonthPage' /* webpackChunkName: "WorkingMonthPage" */));
 
 const Routes = () => {
-    return (<Suspense fallback={<p>Loading...</p>}>
+    return (
+    <Suspense fallback={<p>Loading...</p>}>
         <Switch>
             <Route exact path="/days" component={DaysTypesPage} />
             <Route exact path="/shifts" component={ShiftsPage} />
