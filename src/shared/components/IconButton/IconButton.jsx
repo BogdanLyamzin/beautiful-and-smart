@@ -1,17 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types'
-import Button from '@material-ui/core/Button';
-const Btn = props => (
-    <Button {...props}>
+import IconButton from '@material-ui/core/IconButton';
+
+const IconBtn = props => (
+    <IconButton {...props}>
         {props.children}
-    </Button>
+    </IconButton>
 )
-export default Btn;
-Btn.defaultProps = {
+export default IconBtn;
+IconBtn.defaultProps = {
     type: 'button',
     onClick: () => { }
 }
-Btn.propTypes = {
+IconBtn.propTypes = {
     type: PropTypes.oneOf(['button', 'submit', 'reset']),
     onClick: PropTypes.func,
 }
