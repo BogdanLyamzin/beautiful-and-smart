@@ -1,5 +1,5 @@
 const DaysTypesPage = () => {
-    return ( <></> );
+    return (<></>);
 }
 
 export default DaysTypesPage;
