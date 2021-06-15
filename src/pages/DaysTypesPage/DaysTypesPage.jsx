@@ -1,5 +1,9 @@
+import DaysTypesTable from '../../client/LunchpineScheduler/DaysTypesTable';
+
 const DaysTypesPage = () => {
-    return ( <></> );
+    return (
+        <DaysTypesTable />
+    );
 }
 
 export default DaysTypesPage;
