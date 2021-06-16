@@ -1,0 +1,40 @@
+@import '../../../../../shared/styles/base';
+
+.modalContent {
+  min-height: 300px;
+  width: 300px;
+  padding: 20px;
+}
+
+.text {
+  font-size: 18px;
+  line-height: 1.222;
+  margin-bottom: 20px;
+}
+
+.textareaLabel {
+  display: block;
+  color: rgba(0, 0, 0, 0.54);
+  margin-bottom: 10px;
+}
+
+.inputContainer {
+  margin-bottom: 30px;
+}
+.textarea {
+  padding: 6px;
+  transition: border 250ms linear;
+}
+
+.btn {
+  width: 90px;
+}
+
+.btn:not(:last-child) {
+  margin-right: 10px;
+}
+
+.btnContainer {
+  margin-top: 20px;
+  @include flex(center, center);
+}

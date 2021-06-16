@@ -10,11 +10,19 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-
-import IconBtn from '../../../../shared/components/IconButton';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import BackspaceSharpIcon from '@material-ui/icons/BackspaceSharp';
-// import { getDayTypes } from '../../../../redux/tables/operations'
+import IconBtn from '../../../../shared/components/IconButton';
+import Modal from '../../../../shared/components/Modal';
+import DaysTypesModal from '../components/DaysTypesModal';
+import DaysTypesDeleteModal from './DaysTypesDeleteModal'
+import Button from '../../../../shared/components/Button';
+import { v4 as uuidv4 } from 'uuid';
+import styles from './DaysTypesTable.module.scss';
+
+import { useSelector, shallowEqual, useDispatch } from 'react-redux';
+import { editDayType } from '../../../../redux/tables/operations';
+
 
 
 const columns = [
@@ -32,29 +40,9 @@ const columns = [
         format: (value) => value.toFixed(2),
     },
 ];
-
 function createData(day, description, modification) {
     return { day, description, modification };
 }
-
-
-const getIcons = () => {
-    return (
-        <>
-            <IconBtn color='primary' aria-label="Edit" style={{ fontSize: 50 }}><EditOutlinedIcon /></IconBtn >
-            <IconBtn color='primary' aria-label="Delete" ><BackspaceSharpIcon /></IconBtn>
-        </>
-    )
-}
-
-const icons = getIcons()
-
-const rows = [
-    createData('Week day', "Less workload", icons),
-    createData('Weekend', 'More workload', icons),
-    createData('Holiday', 'A lot of workload', icons),
-];
-
 const useStyles = makeStyles({
     root: {
         width: '100%',
@@ -90,8 +78,56 @@ export default function StickyHeadTable() {
         setDense(event.target.checked);
     };
 
+    const [toggleModal, setToggleModal] = React.useState(false);
+    const [buttonType, setbuttonType] = React.useState('');
+
+    const handleAddClick = () => {
+        setbuttonType('add');
+        setToggleModal(!toggleModal);
+    }
+
+    const handleEditClick = () => {
+        setbuttonType('edit');
+        setToggleModal(!toggleModal);
+    }
+
+    const handleDeleteClick = () => {
+        setbuttonType('delete');
+        setToggleModal(!toggleModal);
+    }
+
+    const getIcons = () => {
+        return (
+            <>
+                <IconBtn onClick={handleEditClick} color='primary' aria-label="Edit" style={{ fontSize: 50 }}><EditOutlinedIcon /></IconBtn >
+                <IconBtn onClick={handleDeleteClick} color='primary' aria-label="Delete" ><BackspaceSharpIcon /></IconBtn>
+            </>
+        )
+    }
+    const icons = getIcons()
+    const rows = [
+        createData('Week day', "Less workload", icons),
+        createData('Weekend', 'More workload', icons),
+        createData('Holiday', 'A lot of workload', icons),
+    ];
+
+
+    const days = useSelector(state => state.tables.daysTypes, shallowEqual)
+
+
+    const dispatch = useDispatch()
+
+    const body = {
+        title: 'Drink Day',
+        description: 'Drink all night',
+    }
+
     return (
         <>
+            <div className={styles.btnContainer}>
+                <Button onClick={handleAddClick} className={styles.openBtn} text={"Add"} />
+            </div>
+
             <Paper className={classes.root}>
                 <TableContainer className={classes.container}>
                     <Table stickyHeader aria-label="sticky table">
@@ -99,7 +135,7 @@ export default function StickyHeadTable() {
                             <TableRow>
                                 {columns.map((column) => (
                                     <TableCell
-                                        key={column.id}
+                                        key={uuidv4()}
                                         align={column.align}
                                         style={{ minWidth: column.minWidth, fontSize: 20, padding: 15 }}
                                     >
@@ -111,11 +147,11 @@ export default function StickyHeadTable() {
                         <TableBody>
                             {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                                 return (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.code} >
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={uuidv4()} >
                                         {columns.map((column) => {
                                             const value = row[column.id];
                                             return (
-                                                <TableCell key={column.id} align={column.align} className={dense ? classes.tableCellDensed : classes.tableCell}  >
+                                                <TableCell key={uuidv4()} align={column.align} className={dense ? classes.tableCellDensed : classes.tableCell}  >
                                                     {column.format && typeof value === 'number' ? column.format(value) : value}
                                                 </TableCell>
                                             );
@@ -140,7 +176,17 @@ export default function StickyHeadTable() {
                 control={<Switch checked={dense} onChange={handleChangeDense} />}
                 label="Dense padding"
             />
-            {/* <button type='submit' onClick={() => dispatch(getDayTypes())}>Dispatch</button> */}
+            {/* <button onClick={() => dispatch(editDayType(7,
+                {
+                    title: 'Drink Day',
+                    description: 'Drink all night'
+                }))}>Edit</button> */}
+
+            {toggleModal && <Modal onClose={() => setToggleModal(!toggleModal)}>
+                {buttonType === 'add' && <DaysTypesModal typeName={buttonType} onClick={() => setToggleModal(!toggleModal)} />}
+                {buttonType === 'edit' && <DaysTypesModal typeName={buttonType} onClick={() => setToggleModal(!toggleModal)} />}
+                {buttonType === 'delete' && <DaysTypesDeleteModal onClick={() => setToggleModal(!toggleModal)} />}
+            </Modal>}
         </>
     );
 }

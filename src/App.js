@@ -1,7 +1,7 @@
-import Modal from './shared/components/Modal'
-import DaysTypesTable from './client/LunchpineScheduler/DaysTypesTable/components/DaysTypesTable'
+// import Modal from './shared/components/Modal'
+import DaysTypesPage from './pages/DaysTypesPage'
 import { BrowserRouter as Router } from "react-router-dom";
-import Navbar from './client/LunchpineScheduler/Navbar/components/Navbar'
+// import Navbar from './client/LunchpineScheduler/Navbar/components/Navbar'
 // import SideBar from './client/LunchpineScheduler/SideBar/components';
 // import Stepper from './pages/StepperPage';
 // import Routes from './Routes';
@@ -11,9 +11,9 @@ function App() {
   return (
     <Router>
 
-      <Navbar />
-      <Modal />
-      <DaysTypesTable />
+      {/* <Navbar /> */}
+      {/* <Modal /> */}
+      <DaysTypesPage />
       {/* <SideBar /> */}
       {/* <Stepper /> */}
       {/* <Routes /> */}

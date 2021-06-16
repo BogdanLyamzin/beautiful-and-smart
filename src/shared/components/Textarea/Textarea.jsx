@@ -2,22 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types'
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import { makeStyles } from '@material-ui/core/styles';
-
 const useStyles = makeStyles({
-    textarea: {
-        resize: "none",
-    },
+  textarea: {
+    resize: "none",
+    outline: "none",
+    width: "100%"
+  },
 });
-
-const Textarea = ({ rows, cols, className, ...props }) => {
-    const classes = useStyles();
+const Textarea = ({ className, ...props }) => {
+  const classes = useStyles();
     return (
-        <TextareaAutosize className={classes.textarea} {...props} />
+        <TextareaAutosize  className={`${classes.textarea} ${className}`} {...props}/>
     )
 };
-
 export default Textarea;
-
 Textarea.propTypes = {
     rows: PropTypes.number,
     cols: PropTypes.number,
@@ -27,5 +25,5 @@ Textarea.propTypes = {
 //   <Textarea
 //     aria-label="description"
 //     placeholder="Description"
-//     autofocus
+//     autoFocus
 //     />

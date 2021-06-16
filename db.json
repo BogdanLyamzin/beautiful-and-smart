@@ -14,6 +14,11 @@
       "id": 3,
       "title": "Holiday",
       "description": "A lot of orders"
+    },
+    {
+      "title": "Drink Day",
+      "description": "Drink all night",
+      "id": 7
     }
   ],
   "shifts": [

@@ -1,0 +1,9 @@
+@import '../../../../shared/styles/base';
+
+.openBtn {
+  cursor: pointer;
+}
+.btnContainer {
+  @include flex(flex-end);
+  margin-bottom: 20px;
+}

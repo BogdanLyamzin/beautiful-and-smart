@@ -1,71 +1,42 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
-import styles from './Modal.module.scss';
+import { useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import Btn from '../Button';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import styles from './Modal.module.scss';
+const Modal = ({ children, onClose }) => {
 
-function getModalStyle() {
-    const top = 50;
-    const left = 50;
-    return {
-        top: `${top}%`,
-        left: `${left}%`,
-        transform: `translate(-${top}%, -${left}%)`,
-    };
-}
+    useEffect(() => {
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [onClose]);
 
-const useStyles = makeStyles(theme => ({
-    paper: {
-        position: 'absolute',
-        width: 500,
-        height: 500,
-        backgroundColor: theme.palette.background.paper,
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
-    },
-    openBtn: {
-        display: "flex",
-        justifyContent: 'flex-end',
-        marginBottom: 15,
-        cursor: 'pointer'
-    },
-}));
-
-export default function SimpleModal() {
-    const classes = useStyles();
-    const [modalStyle] = React.useState(getModalStyle);
-    const [open, setOpen] = React.useState(false);
-
-    const handleOpen = () => {
-        setOpen(true);
-    };
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const body = (
-        <>
-            <div style={modalStyle} className={classes.paper}>
-                <HighlightOffIcon className={styles.btnClose} color='primary' style={{ fontSize: 35 }} onClick={handleClose} />
-            </div>
-        </>
+    const handleKeyDown = useCallback(
+        (e) => {
+            if (e.code === "Escape") {
+                onClose();
+            }
+        },
+        [onClose]
     );
+
+    const handleBackdropClick = (e) => {
+        if (e.currentTarget === e.target) {
+            onClose();
+        }
+    };
+
+    const modalRoot = document.getElementById('modal-root');
 
     return (
-        <div>
-            <div className={classes.openBtn}>
-                <Btn onClick={handleOpen} variant="contained" color='primary' size="small" startIcon={<AddCircleIcon />}>Add</Btn>
+        createPortal(<div className={styles.backdrop} onClick={handleBackdropClick}>
+            <div className={styles.modalLayout}>
+                <div className={styles.modalContent}>
+                    <HighlightOffIcon className={styles.btnClose} color='primary' style={{ fontSize: 35 }} onClick={onClose} />
+                    {children}
+                </div>
             </div>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
-            >
-                {body}
-            </Modal>
-        </div>
+        </div>, modalRoot)
     );
 }
+export default Modal;

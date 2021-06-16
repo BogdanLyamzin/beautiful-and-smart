@@ -1,0 +1,22 @@
+@import '../../../../../shared/styles/base';
+
+.modalContent {
+  min-height: 300px;
+  width: 300px;
+  padding: 20px;
+  @include flex(center, center);
+  flex-direction: column;
+}
+
+.question {
+  font-size: 18px;
+  line-height: 1.222;
+  margin-bottom: 20px;
+}
+.btn {
+  width: 90px;
+}
+
+.btn:not(:last-child) {
+  margin-right: 10px;
+}
