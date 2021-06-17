@@ -3,6 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
 
 body {
+  padding-top: 100px;
   font-family: 'Montserrat', sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -11,7 +12,6 @@ body {
   letter-spacing: 0.04em;
   color: $primary-text-color;
   background-color: #fff;
-  margin-bottom: 120px;
   @include tablet {
     & {
       background-color: #fafafa;

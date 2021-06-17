@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, shallowEqual, useDispatch } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
+
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -17,13 +20,9 @@ import Modal from '../../../../shared/components/Modal';
 import DaysTypesModal from '../components/DaysTypesModal';
 import DaysTypesDeleteModal from './DaysTypesDeleteModal'
 import Button from '../../../../shared/components/Button';
-import { v4 as uuidv4 } from 'uuid';
+
 import styles from './DaysTypesTable.module.scss';
-
-import { useSelector, shallowEqual, useDispatch } from 'react-redux';
-import { editDayType } from '../../../../redux/tables/operations';
-
-
+import { getDayTypes } from '../../../../redux/tables/operations'
 
 const columns = [
     { id: 'day', label: 'Day type', minWidth: 300 },
@@ -40,9 +39,11 @@ const columns = [
         format: (value) => value.toFixed(2),
     },
 ];
+
 function createData(day, description, modification) {
     return { day, description, modification };
 }
+
 const useStyles = makeStyles({
     root: {
         width: '100%',
@@ -80,47 +81,43 @@ export default function StickyHeadTable() {
 
     const [toggleModal, setToggleModal] = React.useState(false);
     const [buttonType, setbuttonType] = React.useState('');
+    const [id, setId] = React.useState(0);
 
     const handleAddClick = () => {
         setbuttonType('add');
         setToggleModal(!toggleModal);
     }
 
-    const handleEditClick = () => {
+    const handleEditClick = (id) => {
         setbuttonType('edit');
+        setId(id)
         setToggleModal(!toggleModal);
     }
 
-    const handleDeleteClick = () => {
+    const handleDeleteClick = (id) => {
         setbuttonType('delete');
+        setId(id)
         setToggleModal(!toggleModal);
     }
 
-    const getIcons = () => {
+    const getIcons = (id) => {
         return (
             <>
-                <IconBtn onClick={handleEditClick} color='primary' aria-label="Edit" style={{ fontSize: 50 }}><EditOutlinedIcon /></IconBtn >
-                <IconBtn onClick={handleDeleteClick} color='primary' aria-label="Delete" ><BackspaceSharpIcon /></IconBtn>
+                <IconBtn onClick={() => handleEditClick(id)} color='primary' aria-label="Edit" style={{ fontSize: 50 }}><EditOutlinedIcon /></IconBtn >
+                <IconBtn onClick={() => handleDeleteClick(id)} color='primary' aria-label="Delete" ><BackspaceSharpIcon /></IconBtn>
             </>
         )
     }
-    const icons = getIcons()
-    const rows = [
-        createData('Week day', "Less workload", icons),
-        createData('Weekend', 'More workload', icons),
-        createData('Holiday', 'A lot of workload', icons),
-    ];
-
-
-    const days = useSelector(state => state.tables.daysTypes, shallowEqual)
-
 
     const dispatch = useDispatch()
 
-    const body = {
-        title: 'Drink Day',
-        description: 'Drink all night',
-    }
+    useEffect(() => {
+        dispatch(getDayTypes())
+    }, [dispatch])
+
+    const days = useSelector(state => state.tables.daysTypes, shallowEqual);
+
+    const rows = days.map(({ id, title, description }) => createData(title, description, getIcons(id)));
 
     return (
         <>
@@ -147,7 +144,7 @@ export default function StickyHeadTable() {
                         <TableBody>
                             {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                                 return (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={uuidv4()} >
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id} >
                                         {columns.map((column) => {
                                             const value = row[column.id];
                                             return (
@@ -176,16 +173,10 @@ export default function StickyHeadTable() {
                 control={<Switch checked={dense} onChange={handleChangeDense} />}
                 label="Dense padding"
             />
-            {/* <button onClick={() => dispatch(editDayType(7,
-                {
-                    title: 'Drink Day',
-                    description: 'Drink all night'
-                }))}>Edit</button> */}
-
             {toggleModal && <Modal onClose={() => setToggleModal(!toggleModal)}>
                 {buttonType === 'add' && <DaysTypesModal typeName={buttonType} onClick={() => setToggleModal(!toggleModal)} />}
-                {buttonType === 'edit' && <DaysTypesModal typeName={buttonType} onClick={() => setToggleModal(!toggleModal)} />}
-                {buttonType === 'delete' && <DaysTypesDeleteModal onClick={() => setToggleModal(!toggleModal)} />}
+                {buttonType === 'edit' && <DaysTypesModal id={id} typeName={buttonType} onClick={() => setToggleModal(!toggleModal)} />}
+                {buttonType === 'delete' && <DaysTypesDeleteModal id={id} onClick={() => setToggleModal(!toggleModal)} />}
             </Modal>}
         </>
     );

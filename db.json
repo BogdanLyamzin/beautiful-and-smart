@@ -1,24 +1,19 @@
 {
   "days": [
     {
-      "id": 1,
       "title": "Week day",
-      "description": "Less orders"
+      "description": "More workload",
+      "id": 1
     },
     {
-      "id": 2,
       "title": "Weekend",
-      "description": "More orders"
+      "description": "Less workload",
+      "id": 2
     },
     {
-      "id": 3,
       "title": "Holiday",
-      "description": "A lot of orders"
-    },
-    {
-      "title": "Drink Day",
-      "description": "Drink all night",
-      "id": 7
+      "description": "We are against slavery",
+      "id": 3
     }
   ],
   "shifts": [

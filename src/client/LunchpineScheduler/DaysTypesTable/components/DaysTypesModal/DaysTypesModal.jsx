@@ -4,20 +4,48 @@ import Textarea from '../../../../../shared/components/Textarea';
 import useForm from '../../../../../shared/hooks/useForm';
 import Button from '../../../../../shared/components/Button';
 import styles from './DaysTypesModal.module.scss';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { createDayType } from '../../../../../redux/tables/operations';
+import { editDayType } from '../../../../../redux/tables/operations';
 
-const initialState = {
-    title: '',
-    description: ''
-}
+let initialState = null;
 
-const DaysTypesModal = ({ onClick, typeName }) => {
+const DaysTypesModal = ({ onClick, typeName, id }) => {
 
+    const days = useSelector(state => state.tables.daysTypes, shallowEqual);
     const dispatch = useDispatch();
+    const btnTypeName = typeName;
 
-    const onSubmit = (body, typeName) => {
-        return typeName === 'add' ? dispatch(createDayType(body)) : null;
+    if (typeName === 'edit') {
+        const title = days.filter(item => item.id === id).map(item => item.title);
+        const description = days.filter(item => item.id === id).map(item => item.description);
+        initialState = {
+            title,
+            description
+        }
+    }
+    if (typeName === 'add') {
+        initialState = {
+            title: '',
+            description: ''
+        }
+    }
+
+    const onSubmit = (body) => {
+        if (btnTypeName === 'add') {
+            dispatch(createDayType(body))
+            onClick()
+            reset()
+        }
+        else if (btnTypeName === 'edit') {
+            dispatch(editDayType(id, body))
+            onClick()
+            reset()
+        }
+    }
+
+    const reset = () => {
+        return initialState;
     }
 
     const [data, , handleChange, handleSubmit] = useForm({ initialState, onSubmit });

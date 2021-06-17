@@ -1,9 +1,32 @@
-.text {
-  font-size: 40px;
-  line-height: 65px;
-  letter-spacing: 0.08em;
+@import '../../styles/base';
+@import '../../styles/styles';
+
+.text2 {
+  font-size: 25px;
+  line-height: 30px;
+  letter-spacing: 0.03em;
   color: #1976D2;
   text-transform: initial;
   background: #FFFFFF;
   text-shadow: 2px 2px 0px #FFFFFF, 5px 4px 0px rgba(0, 0, 0, 0.15);
+}
+.logo {
+  display: none;
+}
+@include tablet {
+  .logo2 {
+    display: none;
+  }
+  .logo {
+    display: block;
+  }
+  .text {
+    font-size: 30px;
+    line-height: 45px;
+    letter-spacing: 0.06em;
+    color: #1976D2;
+    text-transform: initial;
+    background: #FFFFFF;
+    text-shadow: 2px 2px 0px #FFFFFF, 5px 4px 0px rgba(0, 0, 0, 0.15);
+  }
 }
