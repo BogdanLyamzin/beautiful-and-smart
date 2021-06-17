@@ -20,6 +20,7 @@ import Modal from '../../../../shared/components/Modal';
 import DaysTypesModal from '../components/DaysTypesModal';
 import DaysTypesDeleteModal from './DaysTypesDeleteModal'
 import Button from '../../../../shared/components/Button';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 import styles from './DaysTypesTable.module.scss';
 import { getDayTypes } from '../../../../redux/tables/operations'
@@ -122,7 +123,7 @@ export default function StickyHeadTable() {
     return (
         <>
             <div className={styles.btnContainer}>
-                <Button onClick={handleAddClick} className={styles.openBtn} text={"Add"} />
+                <Button onClick={handleAddClick} startIcon={<AddCircleIcon />} className={styles.openBtn} text={"Add"} />
             </div>
 
             <Paper className={classes.root}>

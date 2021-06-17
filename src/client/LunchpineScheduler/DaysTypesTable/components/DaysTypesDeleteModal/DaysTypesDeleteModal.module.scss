@@ -2,10 +2,16 @@
 
 .modalContent {
   min-height: 300px;
-  width: 300px;
+  width: 280px;
   padding: 20px;
   @include flex(center, center);
   flex-direction: column;
+    @include tablet {
+    width: 450px;
+  }
+  @include desktop {
+    width: 600px;
+  }
 }
 
 .question {

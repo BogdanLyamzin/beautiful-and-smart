@@ -1,8 +1,10 @@
 {
   "days": [
     {
-      "title": "Week day",
-      "description": "More workload",
+      "title": [
+        "Week day"
+      ],
+      "description": "Run from the police",
       "id": 1
     },
     {
@@ -14,6 +16,13 @@
       "title": "Holiday",
       "description": "We are against slavery",
       "id": 3
+    },
+    {
+      "title": [
+        "cook pasta"
+      ],
+      "description": "And love yourself\n",
+      "id": 4
     }
   ],
   "shifts": [
