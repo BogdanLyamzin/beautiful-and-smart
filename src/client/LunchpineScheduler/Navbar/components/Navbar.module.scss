@@ -1,0 +1,13 @@
+@import '../../../../shared/styles/base';
+@import '../../../../shared/styles/styles';
+
+@include mobile {
+  .containerBtn {
+    display: none;
+  }
+}
+@include tablet {
+  .containerBtn {
+    display: block;
+  }
+} ;
